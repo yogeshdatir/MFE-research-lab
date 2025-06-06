@@ -1,37 +1,3 @@
-/* Lesson 4: $_GET and $_POST Superglobals
-  ### $_GET:
-  - Used to collect data sent in the URL query string.
-  - Data is appended to the URL after a question mark (?), with each key-value pair separated by an ampersand (&).
-  - Example: `index.php?name=John&age=30`
-  - Data is visible in the URL, making it suitable for non-sensitive data.
-  - Data can be cached, bookmarked, and logged in the browser history.
-  - Commonly used for search queries, filters, and pagination.
-  - Bookmarked URLs can include the data, allowing users to return to the same state of the application and can be shared easily.
-  - Example Usage:
-    - Used for search forms, filters, and pagination.
-    - Example: `index.php?search=keyword&page=2`
-
-  ### $_POST:
-  - Used to collect data sent in the body of an HTTP request.
-  - Data is not visible in the URL, making it suitable for sensitive data like passwords.
-  - Example: Data is sent when a form is submitted with method="POST".
-  - Data is not cached, bookmarked, or logged in the browser history.
-  - Commonly used for form submissions that require data security, such as login forms, registration forms, and data updates.
-  - Data is sent in the request body, making it more secure for sensitive information.
-  - Example Usage:
-    - Used for login forms, registration forms, and data submission that requires security.
-    - Example: A form that submits user credentials or sensitive information.
-
-  ### Differences:
-  - Visibility: $_GET data is visible in the URL, while $_POST data is not.
-  - Data Size: $_GET has size limitations (typically around 2000 characters), while $_POST can handle larger amounts of data.
-  - Use Cases: $_GET is often used for search queries and navigation, while $_POST is used for form submissions that require data security.
-  - Security: $_POST is generally more secure for sensitive data, as it does not expose data in the URL.
-  - Example Usage:
-    - $_GET: Used for search forms, filters, and pagination.
-    - $_POST: Used for login forms, registration forms, and data submission that requires security.
-*/
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,24 +8,45 @@
 </head>
 
 <body>
-  <form action="index.php" method="POST">
-    <h1>Welcome to the Form</h1>
-    <input type="text" name="username" placeholder="Enter your username" required>
-    <input type="password" name="password" placeholder="Enter your password" required>
-    <button type="submit">Submit</button>
-  </form>
+  <form>
+    <label for="workedHours">Worked Hours:</label>
+    <input type="number" id="workedHours" name="workedHours"><br><br>
 
-  <form action="index.php" method="GET">
-    <h1>Another Form</h1>
-    <input type="text" name="anotherField" placeholder="Another field">
-    <button type="submit">Submit Another Form</button>
+    <label for="hourlyRate">Hourly Rate:</label>
+    <input type="number" id="hourlyRate" name="hourlyRate"><br><br>
+
+    <input type="submit" value="Calculate Salary">
   </form>
 </body>
 
 </html>
 <?php
-  echo "Username: {$_POST['username']}<br>";
-  echo "Password: {$_POST['password']}<br>";
+/* Lesson 5: if-else statement
+   * if-else statement syntax:
+   * if (condition) {
+   *   // code to execute if condition is true
+   * } else if (condition) {
+   *   // code to execute if condition is false
+   * } else {
+   *  // code to execute if condition is false
+   * }
+  */
 
-  echo "Another Field: {$_GET['anotherField']}<br>";
+$workedHours = $_GET['workedHours'];
+$hourlyRate = $_GET['hourlyRate'];
+$salary = 0;
+
+if ($workedHours <= 40) {
+  $salary = $workedHours * $hourlyRate; // Regular pay for up to 40 hours
+} else if ($workedHours <= 60) {
+  $overtimeHours = $workedHours - 40;
+  $salary = (40 * $hourlyRate) + ($overtimeHours * $hourlyRate * 1.5); // Overtime pay for hours over 40
+} else {
+  $overtimeHours = $workedHours - 40;
+  $salary = (40 * $hourlyRate) + (20 * $hourlyRate * 1.5) + ($overtimeHours * $hourlyRate * 2); // Double time for hours over 60
+}
+
+echo "Worked Hours: $workedHours<br>";
+echo "Hourly Rate: $hourlyRate<br>";
+echo "Salary: $salary<br>";
 ?>

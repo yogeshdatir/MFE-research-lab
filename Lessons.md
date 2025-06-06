@@ -56,9 +56,9 @@
 
   #### Example of Operator Precedence
 
-  The expression `10 + 5 - 2 * 3 / 2 % 4 ** 2` is evaluated as follows:
+  The expression `10 + 5 - 2 3 / 2 % 4 *2` is evaluated as follows:
 
-  1. Exponentiation: `4 ** 2` is evaluated first.
+  1. Exponentiation: `4 *2` is evaluated first.
   2. Then, multiplication, division, and modulus are evaluated from left to right.
   3. Finally, addition and subtraction are evaluated from left to right.
 
@@ -98,3 +98,17 @@
 - Example Usage:
   - `$_GET`: Used for search forms, filters, and pagination.
   - `$_POST`: Used for login forms, registration forms, and data submission that requires security.
+
+## Lesson 5: if-else statement
+
+### if-else statement syntax:
+
+```
+  if (condition) {
+  // code to execute if condition is true
+  } else if (condition) {
+  // code to execute if condition is false
+  } else {
+  // code to execute if condition is false
+  }
+```
