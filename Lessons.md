@@ -112,3 +112,11 @@
   // code to execute if condition is false
   }
 ```
+
+## Lesson 6: Logical Operators in PHP
+
+### Common logical operators:
+
+- `&&` (AND): True if both operands are true.
+- `||` (OR): True if at least one operand is true.
+- `!` (NOT): True if the operand is false.
