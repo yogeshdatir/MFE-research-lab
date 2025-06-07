@@ -230,3 +230,67 @@
     echo $i;
   }
   ```
+
+## Lesson 8: Arrays in PHP
+
+### Arrays:
+
+- Lists with numeric keys
+- Example: `$fruits = ["Apple", "Banana", "Orange"];`
+
+### Associative Arrays:
+
+- Key-value pairs
+- Example: `$person = ["name" => "John", "age" => 25];`
+
+### Traversing Arrays:
+
+- Example:
+  ```
+  foreach ($array as $value) {
+    echo $value;
+  }
+  ```
+
+### Traversing Associative Arrays:
+
+- Example:
+  ```
+  foreach ($array as $key => $value) {
+    echo "{$key} = {$value} <br>";
+  }
+  ```
+
+### Array Functions:
+
+- `count()`
+  - counts the number of elements in an array
+  - `count( mixed $array_or_countable [, int $mode = COUNT_NORMAL ]): int`
+- `sort()`
+  - sorts an array by value
+  - `sort( array $array [, int $sort_flags = SORT_REGULAR ]): bool`
+- `array_push()`
+  - adds one or more elements to the end of an array
+  - `array_push( array $array [, mixed $... ]): int`
+- `array_pop()`
+  - removes the last element of an array `array_pop( - array $array ): array`
+- `array_shift()`
+  - Shift an element off the beginning of array
+  - `array_shift( array $array ): array`
+- `array_unshift()`
+  - Prepend one or more elements to the beginning of an array
+  - `array_unshift( array $array [, mixed $... ]): int`
+- `array_merge()`
+  - merges one or more arrays
+  - `array_merge( array $array1 [, array $... ]): array`
+- `array_search()`
+  - searches the array for a value and returns the first
+  - corresponding key if successful
+- `in_array()`
+  - checks if a value exists in an array
+- `array_keys()`
+  - returns all the keys of an array
+- `array_values()`
+  - returns all the values of an array
+- `array_filter()`
+  - filters the elements of an array using a callback function
