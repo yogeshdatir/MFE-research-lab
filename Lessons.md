@@ -144,3 +144,89 @@
       break;
   }
   ```
+
+## Lesson 7: Loops in PHP
+
+### 1. for loop:
+
+- Used when you know the number of iterations in advance
+- Syntax:
+
+  ```
+  for (initialization; condition; increment/decrement) {
+    // code to execute
+  }
+  ```
+
+- Example:
+  ```
+  for ($i = 0; $i < 10; $i++) {
+    echo $i;
+  }
+  ```
+
+### 2. while loop:
+
+- Used when you don't know the number of iterations in advance
+- Syntax:
+  ```
+  while (condition) {
+    // code to execute
+  }
+  ```
+- Example:
+  ```
+  $i = 0;
+  while ($i < 10) {
+    echo $i;
+    $i++;
+  }
+  ```
+
+### 3. do-while loop:
+
+- Similar to while loop but guaranteed to execute at least once
+- Syntax:
+  ```
+  do {
+    // code to execute
+  } while (condition);
+  ```
+- Example:
+  ```
+  $i = 0;
+  do {
+    echo $i;
+    $i++;
+  } while ($i < 10);
+  ```
+
+### 4. break:
+
+- Used to exit a loop or switch statement
+- Syntax:
+  `break;`
+- Example:
+  ```
+  for ($i = 0; $i < 10; $i++) {
+    if ($i == 5) {
+      break;
+    }
+    echo $i;
+  }
+  ```
+
+### 5. continue:
+
+- Used to skip the current iteration of a loop
+- Syntax:
+  `continue;`
+- Example:
+  ```
+  for ($i = 0; $i < 10; $i++) {
+    if ($i == 5) {
+      continue;
+    }
+    echo $i;
+  }
+  ```
