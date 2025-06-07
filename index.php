@@ -13,75 +13,138 @@
 </head>
 
 <body>
+  <form action="index.php" method="POST">
+    <legend>Sign In</legend>
+    <label>Username:
+      <input type="text" name="username" />
+    </label>
+    <label>Password:
+      <input type="text" name="password" />
+    </label>
+    <input type="submit" name="signin" value="Sign In" />
+  </form>
+
+  <form action="index.php" method="POST">
+    <legend>Select a card type:</legend>
+    <label>Visa:
+      <input type="radio" name="card_type" value="Visa" />
+    </label>
+    <label>Mastercard:
+      <input type="radio" name="card_type" value="Mastercard" />
+    </label>
+    <label>American Express:
+      <input type="radio" name="card_type" value="American Express" />
+    </label>
+    <input type="submit" name="confirm" value="Confirm" />
+  </form>
+
+  <form action="index.php" method="POST">
+    <legend>Select fruits:</legend>
+    <label>
+      <input type="checkbox" name="fruits[]" value="Banana" />
+      Banana
+    </label>
+    <br>
+    <label>
+      <input type="checkbox" name="fruits[]" value="Apple" />
+      Apple
+    </label>
+    <br>
+    <label>
+      <input type="checkbox" name="fruits[]" value="Orange" />
+      Orange
+    </label>
+    <br>
+    <input type="submit" name="submit" value="Submit" />
+  </form>
 </body>
 
 </html>
 <?php
-/* Lesson 8: Arrays in PHP
-    ### Arrays:
-      - Lists with numeric keys
-      - Example: $fruits = ["Apple", "Banana", "Orange"];
+/* Lesson 9: isset() & empty() functions & Processing radio buttons and checkboxes in PHP
+    ### isset()
+      - isset( mixed $var [, mixed $... ]): bool
+      - Returns TRUE if a variable is declared and not null
 
-    ### Associative Arrays:
-      - Key-value pairs
-      - Example: $person = ["name" => "John", "age" => 25];
-
-    ### Traversing Arrays:
-      - Example: foreach ($array as $value) {
-        echo $value . "<br>";
-      }
-
-    ### Traversing Associative Arrays:
-      - Example: foreach ($array as $key => $value) {
-        echo "{$key} = {$value} <br>";
-      }
-
-    ### Array Functions:
-      - count() - counts the number of elements in an array - count( mixed $array_or_countable [, int $mode = COUNT_NORMAL ]): int
-      - sort() - sorts an array by value - sort( array $array [, int $sort_flags = SORT_REGULAR ]): bool
-      - array_push() - adds one or more elements to the end of an array - array_push( array $array [, mixed $... ]): int
-      - array_pop() - removes the last element of an array - array_pop( array $array ): array
-      - array_shift() - Shift an element off the beginning of array - array_shift( array $array ): array
-      - array_unshift() - Prepend one or more elements to the beginning of an array - array_unshift( array $array [, mixed $... ]): int
-      - array_merge() - merges one or more arrays - array_merge( array $array1 [, array $... ]): array
-      - array_search() - searches the array for a value and returns the first corresponding key if successful
-      - in_array() - checks if a value exists in an array
-      - array_keys() - returns all the keys of an array
-      - array_values() - returns all the values of an array
-      - array_filter() - filters the elements of an array using a callback function
+    ### empty()
+      - empty( mixed $var ): bool
+      - Returns TRUE if a variable if not declared, false, null, ""
 */
 
-// array
-$foods = ["Apple", "Banana", "Orange"];
-echo "{$foods[0]} <br>";
+$v1 = "";
+$v2 = null;
+$v3 = false;
+// undeclared $v4
 
-// associative array
-$person = ["name" => "John", "age" => 25];
-echo "{$person["name"]} <br>";
+if (!isset($_POST["confirm"]) && !isset($_POST["submit"])) {
+  echo "<h4>Variable declarations:</h4>";
+  echo '$v1 = "";<br>
+    $v2 = null;<br>
+    $v3 = false;<br>
+    // undeclared $v4<br>';
 
-$students = [["John", "A"], ["Mary", "B"]];
-echo "{$students[0][0]} <br>";
+  echo "<h4>Testing isset function:</h4>";
+  echo "isset(\$v1): " . isset($v1) . " for empty string value<br>";
+  echo "isset(\$v2): " . isset($v2) . " for null<br>";
+  echo "isset(\$v3): " . isset($v3) . " for false<br>";
+  echo "isset(\$v4): " . isset($v4) . " for undeclared variable<br>";
 
-// traversing array
-echo "<h3>Traversing Array:</h3>";
-foreach ($foods as $food) {
-  echo "{$food} <br>";
+  echo "<h4>Testing empty function:</h4>";
+  echo "empty(\$v1): " . empty($v1) . " for empty string value<br>";
+  echo "empty(\$v2): " . empty($v2) . " for null<br>";
+  echo "empty(\$v3): " . empty($v3) . " for false<br>";
+  echo "empty(\$v4): " . empty($v4) . " for undeclared variable<br>";
 }
 
-// traversing associative array
-echo "<h3>Traversing Associative Array:</h3>";
-foreach ($person as $key => $value) {
-  echo "{$key} = {$value} <br>";
+
+if (isset($_POST["signin"])) {
+  echo "<h3>Sign In:</h3>";
+
+  if (empty($_POST["username"])) {
+    echo "Username is missing";
+  } else if (empty($_POST["password"])) {
+    echo "Password is missing";
+  } else {
+    echo "Welcome!";
+  }
 }
 
-// array functions
-echo "<h2>Array Functions</h2>";
-echo "Count: " . count($foods) . "<br>";
-echo "Sort: " . sort($foods) . "<br>";
-echo "Array Push: " . array_push($foods, "Kiwi") . " ---> ";
-print_r($foods);
-echo "<br>";
-echo "Array Pop: " . array_pop($foods) . "--->";
-print_r($foods);
-echo "<br>";
+// Processing radio buttons and checkboxes
+if (isset($_POST["confirm"])) {
+  echo "<h3>Processing radio button:</h3>";
+
+  $card_type = null;
+
+  if (isset($_POST["card_type"])) {
+    $card_type = $_POST["card_type"];
+  }
+
+  switch ($card_type) {
+    case "Visa":
+      echo "You selected Visa";
+      break;
+    case "Mastercard":
+      echo "You selected Mastercard";
+      break;
+    case "American Express":
+      echo "You selected American Express";
+      break;
+    default:
+      echo "Please select a card type...";
+  }
+}
+
+if (isset($_POST["submit"])) {
+  echo "<h3>Processing checkboxes:</h3>";
+
+  $fruits = null;
+
+  if (isset($_POST["fruits"])) {
+    $fruits = $_POST["fruits"];
+  }
+
+  foreach ($fruits as $fruit) {
+    echo $fruit . "<br>";
+  }
+}
 ?>

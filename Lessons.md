@@ -294,3 +294,15 @@
   - returns all the values of an array
 - `array_filter()`
   - filters the elements of an array using a callback function
+
+## Lesson 9: `isset()` & `empty()` functions & Processing radio buttons and checkboxes in PHP
+
+### `isset()`
+
+- `isset( mixed $var [, mixed $... ]): bool`
+- Returns TRUE if a variable is declared and not null
+
+### `empty()`
+
+- `empty( mixed $var ): bool`
+- Returns TRUE if a variable if not declared, false, null, ""
