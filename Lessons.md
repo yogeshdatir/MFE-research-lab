@@ -120,3 +120,27 @@
 - `&&` (AND): True if both operands are true.
 - `||` (OR): True if at least one operand is true.
 - `!` (NOT): True if the operand is false.
+
+## Lesson 7: Switch Statements in PHP
+
+### Switch Statement:
+
+- Used when you need to compare a single value against multiple possible values
+- More efficient than multiple if-else statements for this purpose
+- Uses 'case' and 'break' keywords
+- Can include a 'default' case for unmatched values
+- Syntax:
+  ```
+  switch (expression) {
+    case value1:
+      // code to execute if expression equals value1
+      break;
+    case value2:
+      // code to execute if expression equals value2
+      break;
+    // ... more cases ...
+    default:
+      // code to execute if expression does not match any case
+      break;
+  }
+  ```
