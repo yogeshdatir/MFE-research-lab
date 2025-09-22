@@ -198,11 +198,8 @@ cd mfe-integration/react-remote
 yarn install
 print_success "React Remote dependencies installed!"
 
-# Install Host App dependencies
-print_status "Installing Host App dependencies..."
-cd ../host
-yarn install
-print_success "Host App dependencies installed!"
+# Note: Host App no longer needed - Smarty is the host
+print_status "Smarty is now the MFE host - no separate host app needed!"
 
 cd "$SCRIPT_DIR"
 echo ""
@@ -213,8 +210,8 @@ echo ""
 
 print_header "🔍 CHECKING PORTS"
 
-# Check if ports are available
-PORTS_TO_CHECK=(8000 3001 3002)
+# Check if ports are available (only need PHP and React Remote now)
+PORTS_TO_CHECK=(8000 3002)
 PORTS_IN_USE=()
 
 for port in "${PORTS_TO_CHECK[@]}"; do
@@ -269,21 +266,7 @@ else
     exit 1
 fi
 
-print_status "Starting Host App server (port 3001)..."
-cd mfe-integration/host
-yarn start > ../../logs/host-app.log 2>&1 &
-HOST_PID=$!
-cd "$SCRIPT_DIR"
-
-# Wait for Host App to start
-if wait_for_port 3001 "Host App"; then
-    print_success "Host App server started (PID: $HOST_PID)"
-else
-    print_error "Failed to start Host App server"
-    kill $HOST_PID 2>/dev/null || true
-    kill $REACT_PID 2>/dev/null || true
-    exit 1
-fi
+print_status "Smarty is the host - no separate host app needed!"
 
 print_status "Starting PHP server (port 8000)..."
 php -S localhost:8000 > logs/php-server.log 2>&1 &
@@ -295,7 +278,6 @@ if wait_for_port 8000 "PHP Server"; then
 else
     print_error "Failed to start PHP server"
     kill $PHP_PID 2>/dev/null || true
-    kill $HOST_PID 2>/dev/null || true
     kill $REACT_PID 2>/dev/null || true
     exit 1
 fi
@@ -313,11 +295,10 @@ echo "🛑 Stopping Micro-Frontend Demo servers..."
 
 # Kill servers
 kill $PHP_PID 2>/dev/null && echo "✅ PHP server stopped" || echo "⚠️  PHP server was not running"
-kill $HOST_PID 2>/dev/null && echo "✅ Host App stopped" || echo "⚠️  Host App was not running"
 kill $REACT_PID 2>/dev/null && echo "✅ React Remote stopped" || echo "⚠️  React Remote was not running"
 
 # Clean up any remaining processes on ports
-for port in 8000 3001 3002; do
+for port in 8000 3002; do
     pid=\$(lsof -ti:\$port 2>/dev/null)
     if [ ! -z "\$pid" ]; then
         kill -9 \$pid 2>/dev/null
@@ -349,18 +330,15 @@ echo -e "   ${YELLOW}Main Demo:${NC} http://localhost:8000"
 echo -e "   ${YELLOW}MFE Demo:${NC} http://localhost:8000?page=mfe-demo"
 echo ""
 echo -e "${CYAN}🔧 Individual servers:${NC}"
-echo -e "   ${YELLOW}PHP App:${NC}      http://localhost:8000"
-echo -e "   ${YELLOW}Host App:${NC}     http://localhost:3001"
-echo -e "   ${YELLOW}React Remote:${NC} http://localhost:3002"
+echo -e "   ${YELLOW}PHP App (Host):${NC}   http://localhost:8000"
+echo -e "   ${YELLOW}React Remote:${NC}     http://localhost:3002"
 echo ""
 echo -e "${CYAN}📋 Server Process IDs:${NC}"
 echo -e "   PHP Server: $PHP_PID"
-echo -e "   Host App: $HOST_PID"
 echo -e "   React Remote: $REACT_PID"
 echo ""
 echo -e "${CYAN}📝 Log files:${NC}"
 echo -e "   logs/php-server.log"
-echo -e "   logs/host-app.log"
 echo -e "   logs/react-remote.log"
 echo ""
 echo -e "${CYAN}🛑 To stop all servers:${NC}"
@@ -391,7 +369,7 @@ echo "Press Ctrl+C to stop all servers, or run ./stop-demo.sh"
 echo ""
 
 # Keep script running and handle Ctrl+C
-trap 'echo ""; echo "🛑 Stopping servers..."; kill $PHP_PID $HOST_PID $REACT_PID 2>/dev/null; echo "✅ All servers stopped!"; exit 0' INT
+trap 'echo ""; echo "🛑 Stopping servers..."; kill $PHP_PID $REACT_PID 2>/dev/null; echo "✅ All servers stopped!"; exit 0' INT
 
 # Wait for all background processes
 wait

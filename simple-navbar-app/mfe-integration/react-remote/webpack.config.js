@@ -36,14 +36,20 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: 'react_remote',
+      name: 'react_task_manager',
       filename: 'remoteEntry.js',
       exposes: {
         './App': './src/App.tsx',
       },
       shared: {
-        react: { singleton: true },
-        'react-dom': { singleton: true },
+        react: { 
+          singleton: true,
+          requiredVersion: '^18.0.0'
+        },
+        'react-dom': { 
+          singleton: true,
+          requiredVersion: '^18.0.0'
+        },
       },
     }),
     new HtmlWebpackPlugin({

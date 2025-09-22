@@ -26,6 +26,7 @@
                                 {if $page_key == 'services'}<i class="fas fa-cogs"></i>{/if}
                                 {if $page_key == 'portfolio'}<i class="fas fa-briefcase"></i>{/if}
                                 {if $page_key == 'contact'}<i class="fas fa-envelope"></i>{/if}
+                                {if $page_key == 'tasks'}<i class="fas fa-tasks"></i>{/if}
                                 {if $page_key == 'mfe-demo'}<i class="fas fa-rocket"></i>{/if}
                                 {$menu_item.title}
                             </a>
@@ -54,5 +55,6 @@
     </footer>
 
     <script src="public/js/script.js"></script>
+    <script src="public/js/mfe-loader.js"></script>
 </body>
 </html>

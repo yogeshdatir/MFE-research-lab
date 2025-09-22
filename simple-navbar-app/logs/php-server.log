@@ -1,0 +1,91 @@
+[Mon Sep 22 15:46:30 2025] PHP 8.4.11 Development Server (http://localhost:8000) started
+[Mon Sep 22 15:46:34 2025] [::1]:53284 Accepted
+[Mon Sep 22 15:46:34 2025] [::1]:53285 Accepted
+[Mon Sep 22 15:46:34 2025] [::1]:53284 [200]: GET /?page=tasks
+[Mon Sep 22 15:46:34 2025] [::1]:53284 Closing
+[Mon Sep 22 15:46:34 2025] [::1]:53285 [200]: GET /public/css/style.css
+[Mon Sep 22 15:46:34 2025] [::1]:53285 Closing
+[Mon Sep 22 15:46:34 2025] [::1]:53288 Accepted
+[Mon Sep 22 15:46:34 2025] [::1]:53289 Accepted
+[Mon Sep 22 15:46:34 2025] [::1]:53288 [200]: GET /public/js/script.js
+[Mon Sep 22 15:46:34 2025] [::1]:53289 [200]: GET /public/js/mfe-loader.js
+[Mon Sep 22 15:46:34 2025] [::1]:53288 Closing
+[Mon Sep 22 15:46:34 2025] [::1]:53289 Closing
+[Mon Sep 22 15:46:34 2025] [::1]:53295 Accepted
+[Mon Sep 22 15:46:34 2025] [::1]:53295 [200]: GET /favicon.ico
+[Mon Sep 22 15:46:34 2025] [::1]:53295 Closing
+[Mon Sep 22 15:46:36 2025] [::1]:53301 Accepted
+[Mon Sep 22 15:46:36 2025] [::1]:53302 Accepted
+[Mon Sep 22 15:46:36 2025] [::1]:53301 [200]: GET /?page=mfe-demo
+[Mon Sep 22 15:46:36 2025] [::1]:53301 Closing
+[Mon Sep 22 15:46:36 2025] [::1]:53302 [200]: GET /public/css/style.css
+[Mon Sep 22 15:46:36 2025] [::1]:53303 Accepted
+[Mon Sep 22 15:46:36 2025] [::1]:53304 Accepted
+[Mon Sep 22 15:46:36 2025] [::1]:53303 [200]: GET /public/js/script.js
+[Mon Sep 22 15:46:36 2025] [::1]:53302 Closing
+[Mon Sep 22 15:46:36 2025] [::1]:53304 [200]: GET /public/js/mfe-loader.js
+[Mon Sep 22 15:46:36 2025] [::1]:53303 Closing
+[Mon Sep 22 15:46:36 2025] [::1]:53304 Closing
+[Mon Sep 22 15:46:36 2025] [::1]:53305 Accepted
+[Mon Sep 22 15:46:36 2025] [::1]:53305 [200]: GET /favicon.ico
+[Mon Sep 22 15:46:36 2025] [::1]:53305 Closing
+[Mon Sep 22 15:46:47 2025] [::1]:53316 Accepted
+[Mon Sep 22 15:46:47 2025] [::1]:53316 [200]: GET /?page=tasks
+[Mon Sep 22 15:46:47 2025] [::1]:53316 Closing
+[Mon Sep 22 15:46:47 2025] [::1]:53317 Accepted
+[Mon Sep 22 15:46:48 2025] [::1]:53317 [200]: GET /public/css/style.css
+[Mon Sep 22 15:46:48 2025] [::1]:53317 Closing
+[Mon Sep 22 15:46:48 2025] [::1]:53318 Accepted
+[Mon Sep 22 15:46:48 2025] [::1]:53318 [200]: GET /public/js/script.js
+[Mon Sep 22 15:46:48 2025] [::1]:53319 Accepted
+[Mon Sep 22 15:46:48 2025] [::1]:53319 [200]: GET /public/js/mfe-loader.js
+[Mon Sep 22 15:46:48 2025] [::1]:53318 Closing
+[Mon Sep 22 15:46:48 2025] [::1]:53319 Closing
+[Mon Sep 22 15:46:48 2025] [::1]:53324 Accepted
+[Mon Sep 22 15:46:48 2025] [::1]:53324 [200]: GET /favicon.ico
+[Mon Sep 22 15:46:48 2025] [::1]:53324 Closing
+[Mon Sep 22 15:46:50 2025] [::1]:53335 Accepted
+[Mon Sep 22 15:46:50 2025] [::1]:53336 Accepted
+[Mon Sep 22 15:46:50 2025] [::1]:53335 [200]: GET /?page=tasks
+[Mon Sep 22 15:46:50 2025] [::1]:53335 Closing
+[Mon Sep 22 15:46:50 2025] [::1]:53336 [200]: GET /public/css/style.css
+[Mon Sep 22 15:46:50 2025] [::1]:53337 Accepted
+[Mon Sep 22 15:46:50 2025] [::1]:53338 Accepted
+[Mon Sep 22 15:46:50 2025] [::1]:53337 [200]: GET /public/js/script.js
+[Mon Sep 22 15:46:50 2025] [::1]:53336 Closing
+[Mon Sep 22 15:46:50 2025] [::1]:53338 [200]: GET /public/js/mfe-loader.js
+[Mon Sep 22 15:46:50 2025] [::1]:53337 Closing
+[Mon Sep 22 15:46:50 2025] [::1]:53338 Closing
+[Mon Sep 22 15:46:50 2025] [::1]:53340 Accepted
+[Mon Sep 22 15:46:50 2025] [::1]:53340 [200]: GET /favicon.ico
+[Mon Sep 22 15:46:50 2025] [::1]:53340 Closing
+[Mon Sep 22 15:47:11 2025] [::1]:53379 Accepted
+[Mon Sep 22 15:47:11 2025] [::1]:53380 Accepted
+[Mon Sep 22 15:47:11 2025] [::1]:53379 [200]: GET /?page=tasks
+[Mon Sep 22 15:47:11 2025] [::1]:53379 Closing
+[Mon Sep 22 15:47:11 2025] [::1]:53380 [200]: GET /?page=tasks
+[Mon Sep 22 15:47:11 2025] [::1]:53380 Closing
+[Mon Sep 22 15:47:11 2025] [::1]:53381 Accepted
+[Mon Sep 22 15:47:11 2025] [::1]:53381 [200]: GET /public/css/style.css
+[Mon Sep 22 15:47:11 2025] [::1]:53382 Accepted
+[Mon Sep 22 15:47:11 2025] [::1]:53381 Closing
+[Mon Sep 22 15:47:11 2025] [::1]:53383 Accepted
+[Mon Sep 22 15:47:11 2025] [::1]:53382 [200]: GET /public/css/style.css
+[Mon Sep 22 15:47:11 2025] [::1]:53384 Accepted
+[Mon Sep 22 15:47:11 2025] [::1]:53383 [200]: GET /public/js/script.js
+[Mon Sep 22 15:47:11 2025] [::1]:53384 [200]: GET /public/js/mfe-loader.js
+[Mon Sep 22 15:47:11 2025] [::1]:53382 Closing
+[Mon Sep 22 15:47:11 2025] [::1]:53385 Accepted
+[Mon Sep 22 15:47:11 2025] [::1]:53383 Closing
+[Mon Sep 22 15:47:11 2025] [::1]:53384 Closing
+[Mon Sep 22 15:47:11 2025] [::1]:53385 [200]: GET /public/js/script.js
+[Mon Sep 22 15:47:11 2025] [::1]:53385 Closing
+[Mon Sep 22 15:47:11 2025] [::1]:53386 Accepted
+[Mon Sep 22 15:47:11 2025] [::1]:53386 [200]: GET /public/js/mfe-loader.js
+[Mon Sep 22 15:47:11 2025] [::1]:53386 Closing
+[Mon Sep 22 15:47:11 2025] [::1]:53389 Accepted
+[Mon Sep 22 15:47:11 2025] [::1]:53389 [200]: GET /favicon.ico
+[Mon Sep 22 15:47:11 2025] [::1]:53389 Closing
+[Mon Sep 22 15:47:11 2025] [::1]:53390 Accepted
+[Mon Sep 22 15:47:11 2025] [::1]:53390 [200]: GET /favicon.ico
+[Mon Sep 22 15:47:11 2025] [::1]:53390 Closing

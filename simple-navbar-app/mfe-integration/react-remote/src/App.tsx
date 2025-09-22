@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
+// TypeScript declaration for webpack federation
+declare const __webpack_share_scopes__: any;
+
 interface Task {
   id: number;
   text: string;
@@ -8,7 +11,7 @@ interface Task {
   createdAt: Date;
 }
 
-const ReactRemoteApp: React.FC = () => {
+export const ReactRemoteApp: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState('');
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
@@ -74,7 +77,7 @@ const ReactRemoteApp: React.FC = () => {
   return (
     <div className="react-remote-app">
       <div className="app-header">
-        <h2>⚛️ React Remote Micro-Frontend</h2>
+        <h2>⚛️ React Remote Micro-Frontend testing</h2>
         <p>A simple task manager built with React and Module Federation</p>
       </div>
 
@@ -175,12 +178,7 @@ const mount = (element: HTMLElement) => {
   root.render(React.createElement(ReactRemoteApp));
 };
 
-// For standalone development
-if (process.env.NODE_ENV === 'development') {
-  const devRoot = document.getElementById('root');
-  if (devRoot) {
-    mount(devRoot);
-  }
-}
+// Standalone mounting is now handled in bootstrap.tsx
+// This keeps the App.tsx clean and focused on the component logic
 
 export default mount;

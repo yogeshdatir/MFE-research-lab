@@ -15,7 +15,7 @@ $smarty->setConfigDir(__DIR__ . '/config/');
 $page = isset($_GET['page']) ? $_GET['page'] : 'home';
 
 // Define valid pages
-$valid_pages = ['home', 'about', 'services', 'portfolio', 'contact', 'mfe-demo'];
+$valid_pages = ['home', 'about', 'services', 'portfolio', 'contact', 'mfe-demo', 'tasks'];
 
 // Check if the requested page is valid
 if (!in_array($page, $valid_pages)) {
@@ -33,6 +33,7 @@ $menu_items = [
   'services' => ['title' => 'Services', 'url' => '?page=services'],
   'portfolio' => ['title' => 'Portfolio', 'url' => '?page=portfolio'],
   'contact' => ['title' => 'Contact', 'url' => '?page=contact'],
+  'tasks' => ['title' => 'Tasks', 'url' => '?page=tasks'],
   'mfe-demo' => ['title' => 'MFE Demo', 'url' => '?page=mfe-demo']
 ];
 
