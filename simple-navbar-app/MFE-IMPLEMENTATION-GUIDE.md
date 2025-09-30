@@ -105,6 +105,209 @@ $smarty->display('layout.tpl');
 
 ## **Step 2: MFE Loader (JavaScript)**
 
+### **🧠 Theoretical Foundation - The MFE Orchestrator**
+
+#### **What is the MFE Loader?**
+
+The MFE Loader is a **JavaScript orchestrator** that acts as the "conductor" of your micro-frontend symphony. Think of it as a smart dispatcher that:
+
+1. **Discovers** what micro-frontends are needed on each page
+2. **Fetches** the required remote applications dynamically
+3. **Mounts** them into designated containers
+4. **Manages** their lifecycle (loading, errors, cleanup)
+
+#### **Core Concepts**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    MFE LOADER ARCHITECTURE                  │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐     │
+│  │   Smarty    │    │ MFE Loader  │    │   Remote    │     │
+│  │    Host     │◄──►│ Orchestrator│◄──►│    Apps     │     │
+│  │             │    │             │    │             │     │
+│  └─────────────┘    └─────────────┘    └─────────────┘     │
+│         │                   │                   │          │
+│    Provides           Manages Runtime      Independent      │
+│   Containers           Federation          React Apps      │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### **The Magic: Runtime Module Federation**
+
+```javascript
+// Traditional Approach (Static)
+import TaskManager from './TaskManager'; // ❌ Compile-time dependency
+
+// MFE Approach (Dynamic)
+const TaskManager = await loadRemote('taskManager'); // ✅ Runtime loading
+```
+
+#### **Key Architectural Principles**
+
+##### **1. Declarative Integration**
+
+```smarty
+{* Just add a container - MFE auto-loads! *}
+<div id="task-manager-container"></div>
+<!-- The loader scans for this ID and loads the corresponding MFE -->
+```
+
+##### **2. Configuration-Driven**
+
+```javascript
+// Single source of truth for all remotes
+const remoteConfigs = {
+  taskManager: {
+    name: 'react_task_manager', // Webpack container name
+    url: 'http://localhost:3002/remoteEntry.js', // Where to fetch from
+    module: './App', // What module to import
+    containerId: 'task-manager-container', // Where to mount
+  },
+};
+```
+
+##### **3. Fault Tolerance**
+
+```
+Remote App Down? ──► Show Error State ──► Main App Continues
+Network Issue?  ──► Show Loading State ──► Retry Available
+Wrong Config?   ──► Log Error ──────────► Graceful Degradation
+```
+
+#### **The Loading Lifecycle**
+
+```
+Page Load
+    │
+    ▼
+┌─────────────────┐
+│ 1. DOM Scan     │ ──► Look for container IDs
+└─────────────────┘
+    │
+    ▼
+┌─────────────────┐
+│ 2. Match Config │ ──► Find corresponding remote
+└─────────────────┘
+    │
+    ▼
+┌─────────────────┐
+│ 3. Fetch Remote │ ──► Load remoteEntry.js
+└─────────────────┘
+    │
+    ▼
+┌─────────────────┐
+│ 4. Import Module│ ──► Get exposed component
+└─────────────────┘
+    │
+    ▼
+┌─────────────────┐
+│ 5. Mount App    │ ──► Render in container
+└─────────────────┘
+```
+
+#### **Why This Architecture Works**
+
+##### **🔄 Runtime Composition**
+
+- Apps are composed at **runtime**, not build time
+- Each MFE is an **independent deployment**
+- Host app doesn't need to know about MFE internals
+
+##### **🎯 Smart Discovery**
+
+- Loader **automatically detects** what MFEs are needed
+- No manual initialization required
+- **Lazy loading** - only loads what's on the page
+
+##### **🛡️ Isolation & Safety**
+
+- Each MFE runs in its **own context**
+- Failed MFEs don't crash the main app
+- **Independent versioning** and dependencies
+
+##### **📦 Shared Dependencies**
+
+- React, ReactDOM shared across all MFEs
+- **Optimized loading** - no duplicate libraries
+- **Version management** handled by Module Federation
+
+#### **POC Implementation Strategy**
+
+##### **Phase 1: Proof of Concept (1-2 days)**
+
+```javascript
+// Minimal loader for POC
+class SimpleMFELoader {
+  async loadTaskManager() {
+    const script = document.createElement('script');
+    script.src = 'http://localhost:3002/remoteEntry.js';
+    document.head.appendChild(script);
+
+    const container = window.react_task_manager;
+    const factory = await container.get('./App');
+    const TaskManager = factory();
+
+    const element = document.getElementById('task-container');
+    TaskManager.default(element);
+  }
+}
+```
+
+##### **Phase 2: Production Ready (3-5 days)**
+
+```javascript
+// Full-featured loader with error handling, auto-discovery, etc.
+class ProductionMFELoader {
+  // Complete implementation with all features
+}
+```
+
+#### **Team Explanation Points**
+
+##### **For Backend Developers**
+
+- "It's like **include/require** but for JavaScript at runtime"
+- "Each MFE is like a **microservice** for the frontend"
+- "The loader is like a **reverse proxy** for UI components"
+
+##### **For Frontend Developers**
+
+- "Build React apps **normally**, the loader handles integration"
+- "It's **dynamic imports** with automatic discovery"
+- "Think **plugin architecture** for web applications"
+
+##### **For DevOps/Management**
+
+- "**Independent deployments** - deploy features without touching main app"
+- "**Team autonomy** - each team owns their MFE completely"
+- "**Risk reduction** - failed features don't break the entire app"
+
+#### **Real-World Benefits**
+
+##### **Development Speed** ⚡
+
+```
+Traditional: Change → Build Entire App → Deploy Everything
+MFE:        Change → Build One MFE → Deploy Just That Feature
+```
+
+##### **Team Scaling** 👥
+
+```
+Traditional: All developers work on same codebase
+MFE:        Each team has independent React app
+```
+
+##### **Technology Evolution** 🚀
+
+```
+Traditional: Stuck with one React version for entire app
+MFE:        Each MFE can use different React versions
+```
+
 ### **public/js/mfe-loader.js**
 
 ```javascript
@@ -866,6 +1069,815 @@ The MFE loader acts as a **micro-frontend orchestrator** that:
 6. **Recovers** gracefully from failures
 
 **You just focus on building React components - the infrastructure handles everything else!** 🚀
+
+---
+
+## **🎯 Creating POC in Main App - Practical Guide**
+
+### **POC Strategy: Start Small, Prove Concept**
+
+#### **Step 1: Minimal POC (Day 1)**
+
+##### **Goal**: Prove that Module Federation works in your main app
+
+```javascript
+// Create: public/js/simple-mfe-poc.js
+class SimpleMFEPOC {
+  async loadRemoteComponent() {
+    try {
+      // 1. Load the remote entry script
+      await this.loadScript('http://localhost:3002/remoteEntry.js');
+
+      // 2. Get the remote container
+      const container = window.react_task_manager;
+
+      // 3. Import the exposed module
+      const factory = await container.get('./App');
+      const RemoteApp = factory();
+
+      // 4. Mount it
+      const element = document.getElementById('poc-container');
+      RemoteApp.default(element);
+
+      console.log('✅ POC Success: Remote loaded!');
+    } catch (error) {
+      console.error('❌ POC Failed:', error);
+    }
+  }
+
+  loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+}
+
+// Initialize POC
+window.mfePOC = new SimpleMFEPOC();
+```
+
+##### **Add to Any Existing Page**
+
+```php
+// In your main app's template/page
+<div class="poc-section">
+    <h2>MFE POC Test</h2>
+    <div id="poc-container" style="border: 2px solid blue; padding: 20px;">
+        <p>Remote component will load here...</p>
+    </div>
+    <button onclick="window.mfePOC.loadRemoteComponent()">
+        Load Remote Component
+    </button>
+</div>
+
+<script src="public/js/simple-mfe-poc.js"></script>
+```
+
+#### **Step 2: Integration POC (Day 2)**
+
+##### **Goal**: Show how MFEs integrate with existing app state/data
+
+```javascript
+// Enhanced POC with data passing
+class IntegratedMFEPOC {
+  constructor() {
+    this.appData = {
+      userId: 123,
+      theme: 'dark',
+      permissions: ['read', 'write'],
+    };
+  }
+
+  async loadRemoteWithData() {
+    try {
+      await this.loadScript('http://localhost:3002/remoteEntry.js');
+      const container = window.react_task_manager;
+      const factory = await container.get('./App');
+      const RemoteApp = factory();
+
+      const element = document.getElementById('integrated-container');
+
+      // Pass main app data to MFE
+      RemoteApp.default(element, {
+        initialData: this.appData,
+        onUpdate: (data) => {
+          console.log('MFE updated data:', data);
+          this.handleMFEUpdate(data);
+        },
+      });
+    } catch (error) {
+      console.error('Integration POC failed:', error);
+    }
+  }
+
+  handleMFEUpdate(data) {
+    // Handle data updates from MFE
+    console.log('Main app received update from MFE:', data);
+    // Update main app state, send to backend, etc.
+  }
+}
+```
+
+#### **Step 3: Production-Like POC (Day 3-5)**
+
+##### **Goal**: Demonstrate production readiness with error handling
+
+```javascript
+// Production-ready POC
+class ProductionMFEPOC {
+  constructor() {
+    this.remotes = new Map();
+    this.config = {
+      taskManager: {
+        url: 'http://localhost:3002/remoteEntry.js',
+        container: 'react_task_manager',
+        module: './App',
+        fallback: '<p>Task Manager unavailable</p>',
+      },
+    };
+  }
+
+  async loadMFE(name, targetElement) {
+    const config = this.config[name];
+    if (!config) {
+      throw new Error(`Unknown MFE: ${name}`);
+    }
+
+    try {
+      // Show loading state
+      targetElement.innerHTML = '<div class="loading">Loading...</div>';
+
+      // Load with timeout
+      await Promise.race([
+        this.loadRemoteModule(config),
+        this.timeout(5000), // 5 second timeout
+      ]);
+
+      // Mount the MFE
+      const RemoteApp = this.remotes.get(name);
+      targetElement.innerHTML = '';
+      RemoteApp.default(targetElement);
+
+      console.log(`✅ ${name} loaded successfully`);
+    } catch (error) {
+      console.error(`❌ Failed to load ${name}:`, error);
+
+      // Show fallback UI
+      targetElement.innerHTML = config.fallback;
+    }
+  }
+
+  async loadRemoteModule(config) {
+    if (this.remotes.has(config.container)) {
+      return this.remotes.get(config.container);
+    }
+
+    await this.loadScript(config.url);
+    const container = window[config.container];
+    const factory = await container.get(config.module);
+    const RemoteApp = factory();
+
+    this.remotes.set(config.container, RemoteApp);
+    return RemoteApp;
+  }
+
+  timeout(ms) {
+    return new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Timeout')), ms)
+    );
+  }
+}
+```
+
+### **POC Integration with Existing Main App**
+
+#### **Scenario 1: Legacy PHP Application**
+
+```php
+// existing-page.php
+<?php
+// Your existing PHP logic
+$userData = getUserData($userId);
+$permissions = getUserPermissions($userId);
+?>
+
+<div class="existing-content">
+    <!-- Your existing HTML/PHP content -->
+    <h1>Welcome <?= $userData['name'] ?></h1>
+
+    <!-- NEW: MFE Integration Point -->
+    <div class="mfe-section">
+        <h2>Enhanced Features (React MFE)</h2>
+        <div id="task-manager-mfe"
+             data-user-id="<?= $userData['id'] ?>"
+             data-permissions="<?= json_encode($permissions) ?>">
+            <div class="mfe-placeholder">
+                <p>Loading enhanced task manager...</p>
+                <button onclick="loadTaskManager()">Load Now</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function loadTaskManager() {
+    const container = document.getElementById('task-manager-mfe');
+    const userId = container.dataset.userId;
+    const permissions = JSON.parse(container.dataset.permissions);
+
+    // Load MFE with context from PHP
+    window.mfePOC.loadMFE('taskManager', container, {
+        userId: userId,
+        permissions: permissions,
+        apiEndpoint: '/api/tasks'
+    });
+}
+</script>
+```
+
+#### **Scenario 2: WordPress/CMS Integration**
+
+```php
+// WordPress shortcode example
+function mfe_task_manager_shortcode($atts) {
+    $atts = shortcode_atts([
+        'user_id' => get_current_user_id(),
+        'height' => '400px'
+    ], $atts);
+
+    return sprintf(
+        '<div id="wp-task-manager"
+              data-user-id="%s"
+              style="height: %s; border: 1px solid #ccc;">
+            <div class="wp-mfe-loading">Loading Task Manager...</div>
+         </div>
+         <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                if (window.mfePOC) {
+                    window.mfePOC.loadMFE("taskManager",
+                        document.getElementById("wp-task-manager"));
+                }
+            });
+         </script>',
+        esc_attr($atts['user_id']),
+        esc_attr($atts['height'])
+    );
+}
+add_shortcode('task_manager', 'mfe_task_manager_shortcode');
+```
+
+#### **Scenario 3: E-commerce Integration**
+
+```javascript
+// Product page MFE integration
+class EcommerceMFEPOC {
+  loadProductReviews(productId) {
+    const container = document.getElementById('product-reviews');
+
+    // Load reviews MFE with product context
+    this.loadMFE('productReviews', container, {
+      productId: productId,
+      apiKey: window.shopConfig.apiKey,
+      theme: window.shopConfig.theme,
+    });
+  }
+
+  loadRecommendations(userId, productId) {
+    const container = document.getElementById('recommendations');
+
+    // Load ML-powered recommendations MFE
+    this.loadMFE('recommendations', container, {
+      userId: userId,
+      currentProduct: productId,
+      algorithm: 'collaborative-filtering',
+    });
+  }
+}
+```
+
+### **POC Success Metrics**
+
+#### **Technical Validation**
+
+- [ ] Remote loads without errors
+- [ ] React component renders correctly
+- [ ] Data passes between main app and MFE
+- [ ] Error states handle gracefully
+- [ ] Performance is acceptable (<2s load time)
+
+#### **Business Validation**
+
+- [ ] Feature works as expected
+- [ ] User experience is seamless
+- [ ] No impact on existing functionality
+- [ ] Team can develop independently
+
+#### **Scalability Validation**
+
+- [ ] Multiple MFEs can coexist
+- [ ] Easy to add new MFEs
+- [ ] Configuration is maintainable
+- [ ] Deployment is independent
+
+### **POC Presentation Template**
+
+#### **Executive Summary**
+
+```
+✅ PROOF OF CONCEPT SUCCESSFUL
+
+🎯 Goal: Integrate React micro-frontends into existing PHP application
+📊 Result: 100% functional with zero impact on existing code
+⚡ Performance: <2s load time, lazy loading
+🛡️ Safety: Isolated failures, graceful degradation
+👥 Team Impact: Independent development and deployment
+```
+
+#### **Technical Demo Script**
+
+```
+1. Show existing PHP page working normally
+2. Click "Load MFE" button
+3. Watch React component load dynamically
+4. Demonstrate data flow between PHP and React
+5. Simulate MFE server down (error handling)
+6. Show multiple MFEs on same page
+7. Demonstrate independent deployment
+```
+
+#### **Next Steps Recommendation**
+
+```
+Phase 1 (Week 1-2): Implement production MFE loader
+Phase 2 (Week 3-4): Migrate first feature to MFE
+Phase 3 (Month 2): Scale to multiple MFEs
+Phase 4 (Month 3+): Full micro-frontend architecture
+```
+
+---
+
+## **⚠️ Limitations & Gotchas - What You Need to Know**
+
+### **🚨 Critical Limitations**
+
+#### **1. Browser Compatibility**
+
+```javascript
+// Module Federation requires modern browsers
+// ❌ Internet Explorer (any version)
+// ❌ Safari < 11.1
+// ❌ Chrome < 63
+// ❌ Firefox < 67
+
+// Check before loading MFEs
+if (!window.fetch || !window.Promise) {
+  console.error('Browser too old for Module Federation');
+  // Show fallback UI
+}
+```
+
+#### **2. Network Dependencies**
+
+```
+Single Point of Failure:
+┌─────────────────┐    ┌─────────────────┐
+│   Main App      │    │   Remote MFE    │
+│   (localhost:8000) │◄──┤ (localhost:3002)│
+└─────────────────┘    └─────────────────┘
+                              │
+                         If this goes down,
+                         feature breaks!
+```
+
+**Mitigation Strategy:**
+
+```javascript
+// Always have fallbacks
+const config = {
+  taskManager: {
+    url: 'http://localhost:3002/remoteEntry.js',
+    fallback: '<div>Task Manager temporarily unavailable</div>',
+    timeout: 5000, // Don't wait forever
+    retries: 2, // Try again on failure
+  },
+};
+```
+
+#### **3. Shared Dependency Hell**
+
+```javascript
+// ❌ Version conflicts can break everything
+// Main App uses React 18.2.0
+// MFE A uses React 18.1.0
+// MFE B uses React 17.0.0
+
+// Webpack tries to resolve but may fail
+shared: {
+  react: {
+    singleton: true, // Only one version allowed
+    requiredVersion: '^18.0.0' // Strict version requirement
+  }
+}
+
+// If versions don't match → Runtime errors!
+```
+
+### **🐛 Common Gotchas**
+
+#### **1. CORS Issues in Development**
+
+```javascript
+// ❌ This will fail in production
+const config = {
+  url: 'http://localhost:3002/remoteEntry.js' // Different origin!
+};
+
+// ✅ Solutions:
+// Option 1: Same domain in production
+const config = {
+  url: window.location.hostname === 'localhost'
+    ? 'http://localhost:3002/remoteEntry.js'
+    : '/mfe/task-manager/remoteEntry.js' // Same origin
+};
+
+// Option 2: Proper CORS headers
+// In your MFE webpack config:
+devServer: {
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+    'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
+  }
+}
+```
+
+#### **2. Memory Leaks**
+
+```javascript
+// ❌ MFEs don't clean up properly
+class BadMFELoader {
+  async loadMFE(name) {
+    // Loads MFE but never cleans up
+    // Event listeners, timers, subscriptions remain
+    const RemoteApp = await this.getRemote(name);
+    RemoteApp.mount(container);
+    // No cleanup when navigating away!
+  }
+}
+
+// ✅ Proper cleanup
+class GoodMFELoader {
+  loadedMFEs = new Map();
+
+  async loadMFE(name) {
+    const RemoteApp = await this.getRemote(name);
+    const unmount = RemoteApp.mount(container);
+
+    // Store cleanup function
+    this.loadedMFEs.set(name, { unmount });
+  }
+
+  unloadMFE(name) {
+    const mfe = this.loadedMFEs.get(name);
+    if (mfe && mfe.unmount) {
+      mfe.unmount(); // Clean up properly
+    }
+    this.loadedMFEs.delete(name);
+  }
+}
+
+// In your React MFE, always provide cleanup:
+const mount = (element) => {
+  const root = ReactDOM.createRoot(element);
+  root.render(<App />);
+
+  // Return cleanup function
+  return () => {
+    root.unmount();
+    // Clean up any global listeners, timers, etc.
+  };
+};
+```
+
+#### **3. CSS Conflicts**
+
+```css
+/* ❌ Global styles in MFEs can break main app */
+/* In your React MFE: */
+.button {
+  background: red !important; /* Affects ALL buttons! */
+}
+
+/* ✅ Scope your MFE styles */
+.react-task-manager .button {
+  background: red;
+}
+
+/* Or use CSS modules/styled-components */
+import styles from './Button.module.css';
+// Automatically scoped
+```
+
+#### **4. State Management Conflicts**
+
+```javascript
+// ❌ Multiple Redux stores can conflict
+// Main app has Redux store
+// MFE also creates Redux store
+// Both try to use window.__REDUX_DEVTOOLS_EXTENSION__
+
+// ✅ Coordinate state management
+// Option 1: Share store from main app
+const mount = (element, { store }) => {
+  return ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    element
+  );
+};
+
+// Option 2: Use different state solutions
+// Main app: Redux
+// MFE: Zustand/Context (no conflicts)
+```
+
+### **🔧 Performance Gotchas**
+
+#### **1. Bundle Size Explosion**
+
+```javascript
+// ❌ Each MFE bundles everything
+// Task Manager MFE: 2MB (includes React, lodash, etc.)
+// User Profile MFE: 1.8MB (includes React, moment, etc.)
+// Dashboard MFE: 2.5MB (includes React, charts, etc.)
+// Total: 6.3MB for 3 MFEs!
+
+// ✅ Proper sharing configuration
+shared: {
+  react: { singleton: true },
+  'react-dom': { singleton: true },
+  lodash: { singleton: true },
+  moment: { singleton: true },
+  // Share common libraries
+}
+// Total: ~800KB shared + 3 small MFEs = 2MB total
+```
+
+#### **2. Loading Waterfalls**
+
+```javascript
+// ❌ Sequential loading
+async loadMultipleMFEs() {
+  await this.loadMFE('taskManager');    // 2s
+  await this.loadMFE('userProfile');    // 2s
+  await this.loadMFE('dashboard');      // 2s
+  // Total: 6 seconds!
+}
+
+// ✅ Parallel loading
+async loadMultipleMFEs() {
+  await Promise.all([
+    this.loadMFE('taskManager'),
+    this.loadMFE('userProfile'),
+    this.loadMFE('dashboard')
+  ]);
+  // Total: 2 seconds!
+}
+```
+
+#### **3. Caching Issues**
+
+```javascript
+// ❌ No caching strategy
+// Every page load fetches remoteEntry.js again
+
+// ✅ Implement caching
+class CachedMFELoader {
+  scriptCache = new Map();
+
+  async loadScript(url) {
+    if (this.scriptCache.has(url)) {
+      return this.scriptCache.get(url);
+    }
+
+    const promise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = url;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+
+    this.scriptCache.set(url, promise);
+    return promise;
+  }
+}
+```
+
+### **🏗️ Architecture Gotchas**
+
+#### **1. Circular Dependencies**
+
+```javascript
+// ❌ MFE A imports from MFE B, MFE B imports from MFE A
+// This breaks Module Federation!
+
+// Host App
+//    ├── MFE A (imports MFE B)
+//    └── MFE B (imports MFE A) ← Circular!
+
+// ✅ Use shared libraries or host-provided utilities
+// Host App
+//    ├── Shared Utils
+//    ├── MFE A (uses shared utils)
+//    └── MFE B (uses shared utils)
+```
+
+#### **2. Version Drift**
+
+```javascript
+// ❌ MFEs developed independently drift apart
+// Main App: Uses API v2
+// MFE A: Still uses API v1
+// MFE B: Already on API v3
+// Result: Inconsistent behavior!
+
+// ✅ Establish contracts and versioning
+interface MFEContract {
+  apiVersion: string;
+  requiredProps: string[];
+  events: string[];
+}
+
+const taskManagerContract: MFEContract = {
+  apiVersion: '2.0',
+  requiredProps: ['userId', 'permissions'],
+  events: ['task.created', 'task.updated'],
+};
+```
+
+#### **3. Testing Complexity**
+
+```javascript
+// ❌ Hard to test integrated behavior
+// Unit tests pass for each MFE
+// Integration fails in production
+
+// ✅ Contract testing + E2E testing
+// 1. Contract tests ensure MFE interfaces don't break
+// 2. E2E tests verify full integration
+// 3. Staging environment with all MFEs deployed
+```
+
+### **🔒 Security Gotchas**
+
+#### **1. Code Injection Risks**
+
+```javascript
+// ❌ Loading arbitrary remote code
+const userProvidedUrl = params.get('mfeUrl');
+await this.loadMFE(userProvidedUrl); // DANGEROUS!
+
+// ✅ Whitelist allowed remotes
+const ALLOWED_REMOTES = {
+  'task-manager': 'https://trusted-domain.com/task-manager/remoteEntry.js',
+  'user-profile': 'https://trusted-domain.com/user-profile/remoteEntry.js',
+};
+
+if (!ALLOWED_REMOTES[mfeName]) {
+  throw new Error('Unauthorized MFE');
+}
+```
+
+#### **2. CSP (Content Security Policy) Issues**
+
+```html
+<!-- ❌ Strict CSP blocks dynamic script loading -->
+<meta http-equiv="Content-Security-Policy" content="script-src 'self'" />
+<!-- Blocks MFE loading! -->
+
+<!-- ✅ Allow MFE domains -->
+<meta
+  http-equiv="Content-Security-Policy"
+  content="script-src 'self' https://mfe-domain.com"
+/>
+```
+
+### **🚀 Production Gotchas**
+
+#### **1. Deployment Coordination**
+
+```bash
+# ❌ Deploy MFE without updating host
+# Host expects MFE API v2
+# New MFE only provides API v3
+# Result: Runtime errors!
+
+# ✅ Backward compatibility or coordinated deployment
+# Option 1: MFE supports both v2 and v3
+# Option 2: Deploy host first, then MFE
+# Option 3: Feature flags for gradual rollout
+```
+
+#### **2. Monitoring & Debugging**
+
+```javascript
+// ❌ Hard to debug distributed MFEs
+// Error occurs in MFE but logged in main app
+// Which version of which MFE caused the issue?
+
+// ✅ Proper error tracking
+class MFELoader {
+  async loadMFE(name) {
+    try {
+      const mfe = await this.loadRemote(name);
+
+      // Track successful loads
+      analytics.track('mfe.loaded', {
+        name,
+        version: mfe.version,
+        loadTime: performance.now(),
+      });
+    } catch (error) {
+      // Track failures with context
+      analytics.track('mfe.failed', {
+        name,
+        error: error.message,
+        userAgent: navigator.userAgent,
+        timestamp: Date.now(),
+      });
+    }
+  }
+}
+```
+
+### **💡 Best Practices to Avoid Gotchas**
+
+#### **1. Start Simple**
+
+```javascript
+// Don't try to share everything immediately
+// Start with one MFE, learn the patterns, then scale
+```
+
+#### **2. Establish Contracts**
+
+```typescript
+// Define clear interfaces between host and MFEs
+interface MFEProps {
+  userId: string;
+  theme: 'light' | 'dark';
+  onUpdate?: (data: any) => void;
+}
+
+interface MFEExports {
+  mount: (element: HTMLElement, props: MFEProps) => () => void;
+  version: string;
+}
+```
+
+#### **3. Plan for Failure**
+
+```javascript
+// Every MFE should have:
+// - Fallback UI
+// - Timeout handling
+// - Retry logic
+// - Error boundaries
+```
+
+#### **4. Monitor Everything**
+
+```javascript
+// Track:
+// - Load times
+// - Error rates
+// - Version compatibility
+// - User impact when MFEs fail
+```
+
+### **🎯 When NOT to Use MFEs**
+
+#### **❌ Don't Use MFEs If:**
+
+- **Small team** (< 5 developers) - overhead not worth it
+- **Simple application** - traditional SPA is simpler
+- **Tight coupling required** - shared state everywhere
+- **Performance critical** - every millisecond matters
+- **Limited browser support** - need IE support
+
+#### **✅ Use MFEs When:**
+
+- **Multiple teams** - independent development needed
+- **Large application** - different domains/features
+- **Technology diversity** - different React versions/frameworks
+- **Independent deployment** - teams deploy separately
+- **Gradual migration** - modernizing legacy apps
 
 ---
 

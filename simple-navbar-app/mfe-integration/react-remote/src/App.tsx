@@ -77,7 +77,7 @@ export const ReactRemoteApp: React.FC = () => {
   return (
     <div className="react-remote-app">
       <div className="app-header">
-        <h2>⚛️ React Remote Micro-Frontend testing</h2>
+        <h2>⚛️ React Remote Micro-Frontend</h2>
         <p>A simple task manager built with React and Module Federation</p>
       </div>
 

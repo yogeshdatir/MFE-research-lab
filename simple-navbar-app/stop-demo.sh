@@ -2,8 +2,8 @@
 echo "🛑 Stopping Micro-Frontend Demo servers..."
 
 # Kill servers
-kill 95400 2>/dev/null && echo "✅ PHP server stopped" || echo "⚠️  PHP server was not running"
-kill 95312 2>/dev/null && echo "✅ React Remote stopped" || echo "⚠️  React Remote was not running"
+kill 84261 2>/dev/null && echo "✅ PHP server stopped" || echo "⚠️  PHP server was not running"
+kill 84194 2>/dev/null && echo "✅ React Remote stopped" || echo "⚠️  React Remote was not running"
 
 # Clean up any remaining processes on ports
 for port in 8000 3002; do
