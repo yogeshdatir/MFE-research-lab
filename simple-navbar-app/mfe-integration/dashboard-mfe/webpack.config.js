@@ -5,7 +5,7 @@ module.exports = {
   mode: 'development',
   entry: './src/index.tsx',
   devServer: {
-    port: 3002,
+    port: 3003,
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
@@ -36,11 +36,13 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: 'react_task_manager',
+      name: 'react_dashboard',
       filename: 'remoteEntry.js',
+      remotes: {
+        taskManager: 'react_task_manager@http://localhost:3002/remoteEntry.js',
+      },
       exposes: {
         './App': './src/App.tsx',
-        './TaskCard': './src/components/TaskCard.tsx',
       },
       shared: {
         react: { 

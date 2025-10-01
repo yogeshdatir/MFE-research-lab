@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # =============================================================================
-# 🚀 MICRO-FRONTEND DEMO - COMPLETE SETUP SCRIPT
+# 🚀 MICRO-FRONTEND DEMO - COMPLETE SETUP SCRIPT (WEBPACK HOST)
 # =============================================================================
-# This script will install all dependencies and start all servers needed
-# for the PHP Smarty + Module Federation demo
+# This script will install all dependencies, build the webpack host,
+# and start all servers needed for the PHP Smarty + Module Federation demo
 # =============================================================================
 
 set -e  # Exit on any error
@@ -197,6 +197,21 @@ print_status "Installing React Remote dependencies..."
 cd mfe-integration/react-remote
 yarn install
 print_success "React Remote dependencies installed!"
+
+# Install and build Webpack MFE Host
+print_status "Installing Webpack MFE Host dependencies..."
+cd ../../webpack-mfe-host
+yarn install
+print_success "Webpack MFE Host dependencies installed!"
+
+print_status "Building Webpack MFE Host for production..."
+yarn build
+print_success "Webpack MFE Host built successfully!"
+
+print_status "Copying webpack bundle to Smarty public directory..."
+mkdir -p ../public/webpack-mfe-host/
+cp -r dist/* ../public/webpack-mfe-host/
+print_success "Webpack bundle copied to public directory!"
 
 # Note: Host App no longer needed - Smarty is the host
 print_status "Smarty is now the MFE host - no separate host app needed!"

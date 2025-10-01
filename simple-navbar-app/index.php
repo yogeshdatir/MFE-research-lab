@@ -15,7 +15,7 @@ $smarty->setConfigDir(__DIR__ . '/config/');
 $page = isset($_GET['page']) ? $_GET['page'] : 'home';
 
 // Define valid pages
-$valid_pages = ['home', 'about', 'services', 'portfolio', 'contact', 'mfe-demo', 'tasks'];
+$valid_pages = ['home', 'tasks', 'dashboard'];
 
 // Check if the requested page is valid
 if (!in_array($page, $valid_pages)) {
@@ -29,12 +29,8 @@ $smarty->assign('page_title', ucfirst($page));
 // Define menu items
 $menu_items = [
   'home' => ['title' => 'Home', 'url' => '?page=home'],
-  'about' => ['title' => 'About', 'url' => '?page=about'],
-  'services' => ['title' => 'Services', 'url' => '?page=services'],
-  'portfolio' => ['title' => 'Portfolio', 'url' => '?page=portfolio'],
-  'contact' => ['title' => 'Contact', 'url' => '?page=contact'],
-  'tasks' => ['title' => 'Tasks', 'url' => '?page=tasks'],
-  'mfe-demo' => ['title' => 'MFE Demo', 'url' => '?page=mfe-demo']
+  'tasks' => ['title' => 'Task Manager', 'url' => '?page=tasks'],
+  'dashboard' => ['title' => 'Dashboard (Shared Components)', 'url' => '?page=dashboard']
 ];
 
 $smarty->assign('menu_items', $menu_items);

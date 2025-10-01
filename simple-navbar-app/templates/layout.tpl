@@ -22,12 +22,8 @@
                         <li class="nav-item">
                             <a href="{$menu_item.url}" class="nav-link {if $current_page == $page_key}active{/if}">
                                 {if $page_key == 'home'}<i class="fas fa-home"></i>{/if}
-                                {if $page_key == 'about'}<i class="fas fa-user"></i>{/if}
-                                {if $page_key == 'services'}<i class="fas fa-cogs"></i>{/if}
-                                {if $page_key == 'portfolio'}<i class="fas fa-briefcase"></i>{/if}
-                                {if $page_key == 'contact'}<i class="fas fa-envelope"></i>{/if}
                                 {if $page_key == 'tasks'}<i class="fas fa-tasks"></i>{/if}
-                                {if $page_key == 'mfe-demo'}<i class="fas fa-rocket"></i>{/if}
+                                {if $page_key == 'dashboard'}<i class="fas fa-share-alt"></i>{/if}
                                 {$menu_item.title}
                             </a>
                         </li>
@@ -55,6 +51,7 @@
     </footer>
 
     <script src="public/js/script.js"></script>
-    <script src="public/js/mfe-loader.js"></script>
+    <!-- Webpack MFE Host Bundle -->
+    <script src="public/webpack-mfe-host/main.js"></script>
 </body>
 </html>

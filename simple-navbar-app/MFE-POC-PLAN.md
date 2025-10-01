@@ -7,7 +7,7 @@ A comprehensive plan to implement and validate MFE architecture with PHP Smarty 
 ## **📋 Executive Summary**
 
 **Objective**: Prove MFE architecture viability for multi-team development with PHP Smarty integration
-**Duration**: 6-8 weeks
+**Duration**: 1 week research + 6-8 weeks implementation (7-9 weeks total)
 **Teams Involved**: Platform Team (2-3 devs), Pilot Team (2-3 devs)
 **Success Criteria**: Independent deployment, team autonomy, performance benchmarks met
 
@@ -15,16 +15,33 @@ A comprehensive plan to implement and validate MFE architecture with PHP Smarty 
 
 ## **🎯 POC Phases Overview**
 
-| Phase       | Duration | Focus                      | Deliverable                      |
-| ----------- | -------- | -------------------------- | -------------------------------- |
-| **Phase 1** | Week 1-2 | Foundation & Setup         | Working webpack host + 1 MFE     |
-| **Phase 2** | Week 3-4 | Integration & Optimization | Smarty integration + performance |
-| **Phase 3** | Week 5-6 | Multi-Team Validation      | 2+ teams, independent deployment |
-| **Phase 4** | Week 7-8 | Production Readiness       | Monitoring, CI/CD, documentation |
+| Phase       | Duration | Focus                          | Deliverable                      |
+| ----------- | -------- | ------------------------------ | -------------------------------- |
+| **Phase 0** | Week 0   | Research & Architecture        | Technical research and proof     |
+| **Phase 1** | Week 1-2 | POC Foundation & Setup         | Working webpack host + 1 MFE     |
+| **Phase 2** | Week 3-4 | POC Integration & Optimization | Smarty integration + performance |
+| **Phase 3** | Week 5-6 | POC Multi-Team Validation      | 2+ teams, independent deployment |
+| **Phase 4** | Week 7-8 | POC Production Readiness       | Monitoring, CI/CD, documentation |
 
 ---
 
-## **📅 Phase 1: Foundation & Setup (Week 1-2)**
+## **🔬 Phase 0: Research & Architecture (Week 0)**
+
+#### **Task 0.1: MFE Feasibility Research**
+
+- **Estimate**: 1 week (5 days)
+- **Owner**: Senior Frontend Developer / Tech Lead
+- **Description**: Evaluate micro-frontend architecture options and create a working prototype that demonstrates MFE integration with our existing PHP Smarty application.
+
+**Acceptance Criteria:**
+
+- [ ] **Working Solution Found** - Achieve React MFE loading in PHP Smarty with component sharing
+- [ ] **Document Approach** - Brief summary of successful approach and lessons learned
+- [ ] **Stakeholder Demo** - Show working prototype and get approval for POC implementation
+
+---
+
+## **📅 Phase 1: POC Foundation & Setup (Week 1-2)**
 
 ### **Week 1: Infrastructure Setup**
 
@@ -37,7 +54,7 @@ A comprehensive plan to implement and validate MFE architecture with PHP Smarty 
   - [ ] Node.js 18+ installed on all dev machines
   - [ ] Yarn package manager configured
   - [ ] Git repository structure established
-  - [ ] Development server ports allocated (8000, 3001-3010)
+  - [ ] Development server ports allocated (8000 for Smarty, 3002+ for MFEs)
 
 #### **Task 1.2: Webpack Host Application**
 
@@ -49,7 +66,7 @@ A comprehensive plan to implement and validate MFE architecture with PHP Smarty 
   - [ ] `webpack.config.js` with Module Federation plugin
   - [ ] `package.json` with dependencies
   - [ ] Basic host application entry point
-  - [ ] Development server running on port 3001
+  - [ ] Webpack host integrated into Smarty (no separate port needed)
 
 **Code Structure:**
 

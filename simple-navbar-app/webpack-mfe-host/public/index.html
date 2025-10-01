@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Webpack MFE Host - Development</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+          sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      .header h1 {
+        color: #2d3748;
+        margin-bottom: 0.5rem;
+      }
+      .header p {
+        color: #718096;
+        margin: 0;
+      }
+      .demo-section {
+        margin: 2rem 0;
+        padding: 1rem;
+        border: 2px dashed #e2e8f0;
+        border-radius: 8px;
+      }
+      .demo-section h3 {
+        color: #4a5568;
+        margin-top: 0;
+      }
+      .controls {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+      }
+      .status {
+        padding: 1rem;
+        background: #f7fafc;
+        border-radius: 6px;
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🚀 Webpack MFE Host - Development Mode</h1>
+        <p>Module Federation Host for Smarty Integration</p>
+      </div>
+
+      <div class="status">
+        <h3>📊 Host Status</h3>
+        <p>Host is running on <strong>http://localhost:3001</strong></p>
+        <p>
+          This development server is for testing the webpack host independently.
+        </p>
+        <p>
+          In production, this will be integrated with your Smarty application.
+        </p>
+      </div>
+
+      <div class="demo-section">
+        <h3>🎯 Task Manager MFE Demo</h3>
+        <div class="controls">
+          <button onclick="loadMFE('taskManager')" class="btn btn-primary">
+            <i class="fas fa-play"></i> Load Task Manager
+          </button>
+          <button onclick="unloadMFE('taskManager')" class="btn btn-secondary">
+            <i class="fas fa-stop"></i> Unload Task Manager
+          </button>
+        </div>
+        <div id="task-manager-container">
+          <div class="mfe-placeholder">
+            <i class="fas fa-cube"></i>
+            <h3>Task Manager MFE</h3>
+            <p>Click "Load Task Manager" to mount the React MFE</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-section">
+        <h3>🔧 MFE Host Controls</h3>
+        <div class="controls">
+          <button onclick="showHostInfo()" class="btn btn-secondary">
+            <i class="fas fa-info-circle"></i> Show Host Info
+          </button>
+          <button onclick="listRemotes()" class="btn btn-secondary">
+            <i class="fas fa-list"></i> List Available Remotes
+          </button>
+        </div>
+        <div id="host-info"></div>
+      </div>
+    </div>
+
+    <script>
+      // Development helper functions
+      function showHostInfo() {
+        const info = document.getElementById('host-info');
+        if (window.webpackMFEHost) {
+          const availableRemotes = window.webpackMFEHost.getAvailableRemotes();
+          const loadedRemotes = window.webpackMFEHost.getLoadedRemotes();
+
+          info.innerHTML = `
+                    <div style="background: #f7fafc; padding: 1rem; border-radius: 6px; margin-top: 1rem;">
+                        <h4>Host Information</h4>
+                        <p><strong>Available Remotes:</strong> ${availableRemotes.join(
+                          ', '
+                        )}</p>
+                        <p><strong>Loaded Remotes:</strong> ${
+                          loadedRemotes.join(', ') || 'None'
+                        }</p>
+                        <p><strong>Host Type:</strong> Webpack Module Federation</p>
+                    </div>
+                `;
+        } else {
+          info.innerHTML =
+            '<p style="color: #e53e3e;">MFE Host not initialized yet</p>';
+        }
+      }
+
+      function listRemotes() {
+        console.log(
+          'Available MFE Remotes:',
+          window.webpackMFEHost?.getAvailableRemotes()
+        );
+        console.log(
+          'Loaded MFE Remotes:',
+          window.webpackMFEHost?.getLoadedRemotes()
+        );
+      }
+
+      // Auto-show host info on load
+      setTimeout(showHostInfo, 1000);
+    </script>
+  </body>
+</html>

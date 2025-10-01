@@ -1,13 +1,20 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
 
-module.exports = {
-  mode: 'development',
-  entry: './src/index.tsx',
+module.exports = (env, argv) => {
+  const isProduction = argv.mode === 'production';
+  
+  return {
+    mode: isProduction ? 'production' : 'development',
+    entry: './src/index.ts',
+    devtool: isProduction ? false : 'source-map',
   devServer: {
-    port: 3002,
+    port: 3001,
     headers: {
       'Access-Control-Allow-Origin': '*',
+    },
+    static: {
+      directory: './dist',
     },
   },
   resolve: {
@@ -16,7 +23,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(ts|tsx)$/,
+        test: /\.(ts|tsx|js|jsx)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -36,25 +43,33 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: 'react_task_manager',
-      filename: 'remoteEntry.js',
-      exposes: {
-        './App': './src/App.tsx',
-        './TaskCard': './src/components/TaskCard.tsx',
+      name: 'smarty_mfe_host',
+      remotes: {
+        taskManager: 'react_task_manager@http://localhost:3002/remoteEntry.js',
+        dashboard: 'react_dashboard@http://localhost:3003/remoteEntry.js',
+        // Add more remotes here as needed
+        // userProfile: 'react_user_profile@http://localhost:3004/remoteEntry.js',
       },
       shared: {
-        react: { 
+        react: {
           singleton: true,
-          requiredVersion: '^18.0.0'
+          requiredVersion: '^18.0.0',
         },
-        'react-dom': { 
+        'react-dom': {
           singleton: true,
-          requiredVersion: '^18.0.0'
+          requiredVersion: '^18.0.0',
         },
       },
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
+      filename: 'index.html',
     }),
   ],
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+      },
+    },
+  };
 };

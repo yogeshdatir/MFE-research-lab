@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo "🚀 Starting all Micro-Frontend applications"
-echo "==========================================="
+echo "🚀 Starting Micro-Frontend applications for Component Sharing Demo"
+echo "=================================================================="
 
 # Function to check if port is in use
 check_port() {
@@ -15,36 +15,45 @@ check_port() {
 
 # Check ports
 echo "🔍 Checking ports..."
-check_port 3001 || echo "   Host app port (3001) is busy"
-check_port 3002 || echo "   React remote port (3002) is busy"
+check_port 3002 || echo "   Task Manager MFE port (3002) is busy"
+check_port 3003 || echo "   Dashboard MFE port (3003) is busy"
 
 echo ""
-echo "🚀 Starting React Remote on port 3002..."
+echo "🚀 Starting Task Manager MFE on port 3002..."
 cd react-remote
 yarn start &
-REACT_PID=$!
+TASK_PID=$!
 
-echo "⏳ Waiting for React Remote to start..."
+echo "⏳ Waiting for Task Manager to start..."
 sleep 5
 
-echo "🚀 Starting Host Application on port 3001..."
-cd ../host
+echo ""
+echo "🚀 Starting Dashboard MFE on port 3003..."
+cd ../dashboard-mfe
 yarn start &
-HOST_PID=$!
+DASHBOARD_PID=$!
+
+echo "⏳ Waiting for Dashboard to start..."
+sleep 5
 
 echo ""
-echo "✅ Applications started!"
+echo "✅ MFE Applications started!"
 echo "📝 Process IDs:"
-echo "   React Remote PID: $REACT_PID"
-echo "   Host App PID: $HOST_PID"
+echo "   Task Manager MFE PID: $TASK_PID"
+echo "   Dashboard MFE PID: $DASHBOARD_PID"
 echo ""
 echo "🌐 Access URLs:"
-echo "   - React Remote: http://localhost:3002"
-echo "   - Host App: http://localhost:3001"
-echo "   - PHP App: http://localhost:8000"
+echo "   - Task Manager MFE: http://localhost:3002"
+echo "   - Dashboard MFE: http://localhost:3003"
+echo "   - PHP Smarty App (with integrated host): http://localhost:8000"
+echo ""
+echo "🎯 Demo Instructions:"
+echo "   1. Visit http://localhost:8000"
+echo "   2. Click 'Task Manager' to see original TaskCard component"
+echo "   3. Click 'Dashboard' to see shared TaskCard component"
 echo ""
 echo "⏹️  To stop all processes:"
-echo "   kill $REACT_PID $HOST_PID"
+echo "   kill $TASK_PID $DASHBOARD_PID"
 echo ""
 echo "Press Ctrl+C to stop all applications"
 
